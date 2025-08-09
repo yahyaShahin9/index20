@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>CORS Test</h2>
+<script>
+fetch("https://https://magiceden.io/api/v0/sdk/c1314b5b-ece8-4b4f-a879-3894dda364e4/emailVerifications/create", {
+    credentials: "include"
+})
+.then(response => response.text())
+.then(data => {
+    console.log("Response:", data);
+    document.body.innerHTML += "<pre>" + data + "</pre>";
+})
+.catch(err => console.error(err));
+</script>
+</body>
+</html>
