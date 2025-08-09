@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CORS Test</title>
+</head>
+<body>
+<h2>Testing CORS...</h2>
+
+<script>
+fetch("https://auth.magiceden.io/api/v0/sdk/c1314b5b-ece8-4b4f-a879-3894dda364e4/emailVerifications/create", {
+    method: "POST",
+    credentials: "include", // مهم عشان نشوف هل الكوكيز بتتبعت
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({email: "test@example.com"})
+})
+.then(response => {
+    console.log("Status:", response.status);
+    return response.text();
+})
+.then(data => {
+    console.log("Response Data:", data);
+})
+.catch(error => {
+    console.error("CORS or Network Error:", error);
+});
+</script>
+
+</body>
+</html>
